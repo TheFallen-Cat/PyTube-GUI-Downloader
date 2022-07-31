@@ -135,25 +135,3 @@ class VideoFunctions(tube.YouTube):
 
         return data_dict
 
-
-        
-
-
-
-
-
-
-    
-
-
-
-
-o = VideoFunctions()
-
-
-
-
-
-
-
-
