@@ -2,6 +2,7 @@
 import customtkinter as ctk
 import os
 from PIL import Image, ImageTk
+from mainframes.setting_frame import SettingsFrame
 
 
 #Inbuilt Imports
@@ -39,6 +40,8 @@ class MainApp:
         #============ Content/Results Frame ============
 
         self.content_frame = ContentFrame(self.root, self.main_font)
+
+        self.settings_frame = SettingsFrame(self.root)
 
 
 
