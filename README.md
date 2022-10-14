@@ -5,3 +5,5 @@
 ```
 
 > Having any issues? (*i mean ofc there would be*) Open an Issue!
+
+### This repo's development has been postponed and will continue shortly.
