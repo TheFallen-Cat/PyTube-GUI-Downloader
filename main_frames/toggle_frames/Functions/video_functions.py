@@ -1,6 +1,8 @@
 import threading
 import pytube as tube
 import datetime as dt
+import os
+
 
 
 
@@ -10,8 +12,6 @@ url = "https://youtu.be/8UVNT4wvIGY"
 
 class VideoFunctions(tube.YouTube):
 
-    #Time format for calculating the time 
-    TIME_FORMAT = "%H:%M:%S"
 
     def __init__(self):
          self.TIME_FORMAT = '%H:%M:%S'
@@ -80,10 +80,33 @@ class VideoFunctions(tube.YouTube):
         return ":".join(modified_list)
     
 
-    #fromBytes function -> To convert bytes to better datasize(MB, GB, TB, etc.)
+    #fromBytes function -> To convert bytes to better size
     @staticmethod
     def fromBytes(bytes : int):
-        pass
+
+        size = round(bytes/1000000, 1)
+        return size
+
+
+    #toPercentage function -> To show percentage of video downloaded
+    @staticmethod
+    def toPercentage(main_int, bytes):
+
+        return round((bytes/main_int)*100, 1) 
+
+
+    #prettifyBytes function -> To convert bytes to units(MB, GB, TB, etc.)
+    def prettifyBytes(self, bytes : int):
+
+        
+        if bytes<1:
+            return "KB"
+
+        elif bytes<1000:
+           return "MB"
+
+        elif bytes>=1000:
+           return "GB"
 
 
     #createTime function -> for creating a time object at start and end of the download function
@@ -97,25 +120,28 @@ class VideoFunctions(tube.YouTube):
         return formatted_time
 
 
-    #downloadVideo function -> the name explains it, c'mon
+    #downloadVideo function -> the name explains it
 
-    def downloadVideo(self, *args, **kwargs):
+    def downloadVideo(self, url, path_for_download = None, progress_func = None):
+
+        print(path_for_download, url)
         started_on = self.createTime()
 
-        yt_object = tube.YouTube(*args, **kwargs)
+        yt_object = tube.YouTube(url=url, on_progress_callback=progress_func)
 
         video = yt_object.streams.get_highest_resolution()
         
 
-        video.download()
+        video.download(output_path=path_for_download)
 
         ended_on = self.createTime()
 
         time_taken = self.timeTaken(started_on, ended_on)
         speed_was = round(self.networkSpeed(video.filesize, time_taken), 4)
 
-        print(f" Seconds took : {time_taken}")
-        print(f" Average Speed : {speed_was}")
+        # print(f" Seconds took : {time_taken}")
+        # print(f" Average Speed : {speed_was}")
+
 
 
 
@@ -130,8 +156,12 @@ class VideoFunctions(tube.YouTube):
         data_dict['title'] = video.title
         data_dict['duration'] = self.fromSeconds(video.length)
         data_dict['views'] = video.views
-        data_dict['size'] = round(video.streams.get_highest_resolution().filesize_approx/1000000, 1)
+        data_dict['size'] = self.fromBytes(video.streams.get_highest_resolution().filesize_approx)
+        data_dict['size_type'] = self.prettifyBytes(data_dict['size'])
         data_dict['thumbnail-url'] = video.thumbnail_url
+        data_dict['available_resolutions'] = video.streams.filter(progressive=True)
+
+        print(data_dict)
 
         return data_dict
 

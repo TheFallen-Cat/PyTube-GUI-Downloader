@@ -1,14 +1,14 @@
 import tkinter as tk
 import customtkinter as ctk
 from PIL import Image, ImageTk
-from video_functions import VideoFunctions
-from mainframes.home_content_frame import ContentFrame
-from mainframes.setting_frame import SettingsFrame
+from toggle_frames.Functions.video_functions import VideoFunctions
+from toggle_frames.SettingsFrame.setting_frame import SettingsFrame
+from toggle_frames.DownloadVideoFrame.home_content_frame import ContentFrame
 
 
 
 
-class OptionFrame():
+class AvailableMenuFrames():
 
     def __init__(self, master, font):
 
@@ -29,7 +29,7 @@ class OptionFrame():
 
 
 
-        self.app_name = ctk.CTkLabel(self.options_frame, text="Options", text_font=font, text_color='#ffffff')
+        self.app_name = ctk.CTkLabel(self.options_frame, text="Tabs", text_font=font, text_color='#ffffff')
         self.app_name.grid(row=1, column=0, padx=10, pady=10, sticky='nswe')
 
 

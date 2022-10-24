@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-import video_functions as vf
+from ..Functions import video_functions as vf
 import customtkinter as ctk
 
 
@@ -19,11 +19,6 @@ class VideoInfoFrame():
 
         self.function_manager = vf.VideoFunctions()
 
-
-
-        #============ Thread Functions ============
-
-        self.download = lambda url : self.function_manager.thread_function(self.functions.downloadVideo, (url,) )
 
 
         #============ Video Title ============
@@ -76,9 +71,10 @@ class VideoInfoFrame():
         try:
             data_found = self.function_manager.getAllData(url)
 
+            config_text = f"{str(data_found['size'])} {data_found['size_type']}"
             self.title.config(text=data_found['title'])
             self.duration.config(text=data_found['duration'])
-            self.filesize.config(text=str(data_found['size']))
+            self.filesize.config(text=config_text)
             self.views.config(text=str(data_found['views']))
 
         except:
